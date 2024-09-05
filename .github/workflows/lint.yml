@@ -1,0 +1,41 @@
+name: 🔎  Lint files
+
+on:
+  pull_request:
+jobs:
+  test-check:
+    name: runner / sqlfluff (github-check)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: yu-iskw/action-sqlfluff@v3
+        id: lint-sql
+        env:
+          DBT_SRC_SCHEMA: 'SRC'
+          DBT_STG_SCHEMA: 'STG'
+          DBT_DIM_SCHEMA: 'DIM'
+          DBT_FACT_SCHEMA: 'FACT'
+          DBT_DIM_LEGACY_SCHEMA: 'EI_RDM'
+          DBT_RPT_SCHEMA: 'RPT'
+          DBT_RPT_LEGACY_SCHEMA: 'R_EI_SYSADM'
+          DBT_TEST_SCHEMA: 'TEST'
+          DBT_ARTIFACTS_SCHEMA: 'DBT_ARTIFACTS'
+          DBT_TGT_DB: 'ENT_PROD'
+          DBT_MAT_TABLE: 'table'
+          DBT_MAT_VIEW: 'view'
+          DBT_STORE_TEST_RESULTS: 'NO'
+          DBT_RZ_RAW: 'REDZONE'
+          DBT_RZ_SCHEMA: 'REDZONE'
+          DBT_RZ_DS_MAT: 'table'
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          sqlfluff_version: "2.0.7"
+          sqlfluff_command: "lint" # Or "fix"
+          config: "${{ github.workspace }}/.sqlfluff"
+          paths: '${{ github.workspace }}/models'
+      - name: 'Show outputs (Optional)'
+        shell: bash
+        run: |
+          echo '${{ steps.lint-sql.outputs.sqlfluff-results }}' | jq -r '.'
+          echo '${{ steps.lint-sql.outputs.sqlfluff-results-rdjson }}' | jq -r '.'

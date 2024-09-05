@@ -1,0 +1,133 @@
+/* Disabling this because this is not running at all in IICS*/
+{{
+  config( 
+      enabled= false ,
+    materialized=env_var('DBT_MAT_TABLE'),
+    tags=["finance","gl","gl_trans"],
+    snowflake_warehouse=env_var('DBT_WBX_SF_WH')
+  )
+}}
+
+with source as (
+    select * from {{ ref ('fct_wbx_fin_gl_trans') }}
+),
+
+dim_date as (
+    select * from {{ ref('src_dim_date') }}
+),
+
+
+final as (
+    select
+     --   src.unique_key                      as unique_key,
+        src.source_system                   as source_system,
+        src.document_company                as document_company,
+        src.source_document_type            as source_document_type,
+        src.document_type                   as document_type,
+        src.document_number                 as document_number,
+        src.source_account_identifier       as source_account_identifier,
+        src.gl_date                         as gl_date,    
+        dim_date.fiscal_year_period_no      as fiscal_year_period_no,
+        dim_date.fiscal_year                as fiscal_year,
+        src.source_business_unit_code       as source_business_unit_code,
+        null                                as source_subledger_identifier,
+        null                                as source_subledger_type,
+        src.void_flag                       as void_flag,
+        src.transaction_currency            as transaction_currency,
+        src.target_account_identifier       as target_account_identifier,
+        src.account_guid                    as account_guid,
+        src.source_ledger_type              as source_ledger_type,
+        src.ledger_type                     as ledger_type,
+        src.batch_number                    as batch_number,
+        src.batch_type                      as batch_type,
+        src.batch_date                      as batch_date,
+        src.source_address_number           as source_address_number,
+        src.address_guid                    as address_guid,
+        src.company_code                    as company_code,
+        src.source_object_id                as source_object_id,
+        src.source_subsidary_id             as source_subsidary_id,
+        src.source_company_code             as source_company_code,
+        src.business_unit_address_guid      as business_unit_address_guid,
+        0                                   as subledger_guid,
+        null                                as subledger_type_desc,
+        src.base_currency                   as base_currency,
+        SUM(src.base_ledger_amt)            as base_ledger_amt,
+        src.transaction_currency            as txn_currency,
+        src.txn_conv_rt                     as txn_conv_rt,
+        SUM(src.txn_ledger_amt)             as txn_ledger_amt,
+        src.phi_currency                    as phi_currency,
+        src.phi_conv_rt                     as phi_conv_rt,
+        SUM(src.phi_ledger_amt)             as phi_ledger_amt,
+        src.pcomp_currency                  as pcomp_currency,
+        src.pcomp_conv_rt                   as pcomp_conv_rt,
+        SUM(src.pcomp_ledger_amt)           as pcomp_ledger_amt,
+        SUM(src.quantity)                   as quantity,
+        src.transaction_uom                 as transaction_uom,
+        src.supplier_invoice_number         as supplier_invoice_number,
+        src.invoice_date                    as invoice_date,
+        src.account_cat21_code              as account_cat21_code,
+        src.source_date_updated             as source_date_updated,
+        src.source_updated_d_id             as source_updated_d_id,
+        src.explanation_txt                 as explanation_txt,
+        src.remark_txt                      as remark_txt,
+        src.reference1_txt                  as reference1_txt,
+        src.reference2_txt                  as reference2_txt,
+        src.reference3_txt                  as reference3_txt,
+        current_timestamp()                 as load_date,
+        current_timestamp()                 as update_date
+
+    from source src
+        left join dim_date 
+        on trunc(src.gl_date,'DAY') = trunc(dim_date.calendar_date,'DAY') 
+    group by
+   -- unique_key,
+    source_system,
+    document_company,
+    source_document_type,
+    document_type,
+    document_number,
+    source_account_identifier,
+    gl_date,    
+    fiscal_year_period_no,
+    fiscal_year,
+    source_business_unit_code,
+    source_subledger_identifier,
+    source_subledger_type,
+    void_flag,
+    transaction_currency,
+    target_account_identifier,
+    account_guid,
+    source_ledger_type,
+    ledger_type,
+    batch_number,
+    batch_type,
+    batch_date,
+    source_address_number,
+    address_guid,
+    company_code,
+    source_object_id,
+    source_subsidary_id,
+    source_company_code,
+    business_unit_address_guid,
+    subledger_guid,
+    subledger_type_desc,
+    base_currency,
+    txn_currency,
+    txn_conv_rt,
+    phi_currency,
+    phi_conv_rt,
+    pcomp_currency,
+    pcomp_conv_rt,
+    transaction_uom,
+    supplier_invoice_number,
+    invoice_date,
+    account_cat21_code,
+    source_date_updated,
+    source_updated_d_id,
+    explanation_txt,
+    remark_txt,
+    reference1_txt,
+    reference2_txt,
+    reference3_txt 
+)
+select * from final

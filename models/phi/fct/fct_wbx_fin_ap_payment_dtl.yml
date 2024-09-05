@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: fct_wbx_fin_ap_payment_dtl
+    description: AP Payment Detail .
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique:
+              config:
+                severity: warn
+                warn_if: ">1"
+          - not_null                         
+      - name: document_type 
+        tests: 
+          - not_null:
+              config:
+                severity: warn
+                warn_if: ">1"                
+      - name: document_number 
+        tests: 
+          - not_null:
+              config:
+                severity: warn
+                warn_if: ">1"
+      - name: account_guid
+        description: The system generated unique identifier for Weetabix Account .
+        tests:
+          - relationships:  
+              to: ref('dim_wbx_account')  
+              field: account_guid
+              config:
+                severity: warn
+                warn_if: ">1" 
+      - name: payee_address_number_guid
+        description: The system generated unique identifier for payee address .
+        tests:
+          - relationships:  
+              to: ref('dim_wbx_supplier')  
+              field: supplier_address_number_guid
+              config:
+                severity: warn
+                warn_if: ">1" 
+      - name: business_unit_address_guid
+        description: The system generated unique identifier for Business Unit.
+        tests:
+          - relationships:  
+              to: ref('dim_wbx_plant_dc')  
+              field: plantdc_address_guid
+              config:
+                severity: warn
+                warn_if: ">1"

@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: fct_wbx_mfg_wo_gl_agg
+    description: wbx mfg wo gl agg fact
+    columns:
+      - name: unique_key
+        description: unique id on the table
+        tests:
+          - unique:
+              config:
+                severity: warn
+                warn_if: ">1"

@@ -1,0 +1,341 @@
+version: 2
+
+models:
+  - name: dim_wbx_customer
+    description: Customer dimension.
+    columns:
+        - name: unique_key
+          description: The system generated unique key id created as the primary key of the this table.
+          tests:
+             - unique
+             - not_null
+        - name: customer_address_number_guid
+          description: The system generated unique identifier for customer Codes.
+          tests:
+          - not_null
+        - name: company_code
+          description: company code
+          tests:
+          - not_null   
+        - name: source_system_address_number
+          description: source system number
+          tests:
+          - not_null        
+
+  - name: dim_wbx_company
+    description: Company dimension.
+    columns:
+        - name: unique_key
+          description: The system generated unique key id created as the primary key of the this table.
+          tests:
+            - unique
+            - not_null
+        - name: company_address_guid
+          description: The system generated unique identifier for Company Codes.
+          tests:
+            - not_null
+            - unique
+        - name: company_code
+          description: company codes
+          tests:
+             - not_null
+        - name: company_name
+          description: company code desc
+          tests:
+             - not_null         
+        - name: type
+          description: type of a company(company,warehouse etc.)
+          tests:
+          - not_null  
+        - name: segment
+          description: company segment
+          tests:
+          - not_null           
+
+  - name: dim_wbx_plant_dc
+    description: Plant/distirbution center master dimension.
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null
+      - name: plantdc_address_guid
+        description: The system generated unique identifier for Plant Codes.
+        tests:
+          - not_null
+          - unique      
+
+  - name: dim_wbx_supplier
+    description: supplier(vendor) dimension
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null
+      - name: source_system_Address_number
+        description: source code(natural key)
+        tests:
+          - not_null      
+      - name: source_supplier_type
+        description: type of supplier
+        tests:
+          - not_null           
+
+  - name: dim_wbx_item
+    description: Item master dimension.
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null
+      - name: business_unit_address_guid
+        description: The system generated unique identifier for Item.
+        tests:
+          - not_null        
+      - name: source_business_unit_code
+        description: business_unit
+        tests:
+          - not_null         
+      - name: item_type
+        description: type of item
+        tests:
+          - not_null           
+      - name: case_item_number
+        description: item_number
+        tests:
+          - not_null           
+      - name: source_item_identifier
+        description: item_id
+        tests:
+          - not_null
+      - name: vendor_address_guid
+        description: The system generated unique identifier for Supplier.
+        tests:
+          - relationships:  
+              to: ref('dim_wbx_supplier')  
+              field: supplier_address_number_guid
+                                    
+                  
+  - name: dim_wbx_location
+    description: location master dimension.
+    columns:
+      - name: location_guid
+        description: The system generated unique identifier for Location Codes.
+        tests:
+          - not_null
+          - unique
+                                 
+  - name: dim_wbx_uom
+    description: wbx uom conversion.
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null
+      - name: item_guid
+        description: The system generated unique identifier for Item.
+        tests:
+          - not_null
+      - name: conversion_Rate
+        description: rate to get form from_uom to to_uom
+        tests:
+          - not_null      
+      - name: inversion_rate
+        description: inverse of conversion_rate
+        tests:
+          - not_null      
+
+  - name: xref_wbx_payment_terms
+    description: Payment Terms dimension table.
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null
+      - name: payment_terms_guid
+        description: The system generated unique id for the Payment Terms Code.
+        tests:
+          - not_null
+      - name: source_payment_terms_code
+        tests:
+          - not_null
+      - name: payment_terms_code
+        tests:
+          - not_null        
+
+  - name: dim_wbx_date_oc
+    description: oc specific date dim for bobe
+    columns:
+      - name: fiscal_date_id
+        description: fiscal date in julian format
+        tests:
+          - not_null   
+
+  - name: dim_wbx_promo                                                     
+    description: Promotion related data for Weetabix
+    columns:
+      - name: promo_guid
+        description: system generated unique identifier
+        tests:
+          - not_null    
+  - name: dim_wbx_scenario                                                     
+    description: scenario related data for Weetabix
+    columns:
+      - name: scenario_guid
+        description: system generated unique identifier
+        tests:
+          - not_null    
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null
+  - name: dim_wbx_project                                                     
+    description: Project related data for Weetabix
+    columns:
+      - name: project_guid
+        description: system generated unique identifier
+        tests:
+          - not_null    
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null
+
+
+  - name: dim_wbx_planning_date_oc
+    description: oc specific planning calendar dim for wbx
+    columns:
+      - name: calendar_Date
+        description: calendar date
+        tests:
+          - not_null  
+
+  - name: dim_wbx_customer_ext                                                     
+    description: Customer extn related data for Weetabix
+    columns:
+      - name: unique_key
+        description: system generated unique identifier
+        tests:
+          - not_null
+          - unique    
+  - name: dim_wbx_budg_line                                                     
+    description: budget related data for Weetabix
+    columns:
+      - name: project_guid
+        description: system generated unique identifier
+        tests:
+          - not_null    
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - not_null        
+      
+  - name: dim_wbx_account
+    description: Onestream Account model.
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null
+      - name: account_guid
+        description: The account guid field
+        tests:
+          - not_null
+          - unique
+
+  - name: xref_wbx_hierarchy
+    description: hierarchy dim 
+    columns:
+      - name: leaf_node
+        description: leaf node
+        tests:
+          - not_null    
+
+  - name: dim_wbx_fin_onestream_month
+    description: one stream month data
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null                     
+  - name: dim_wbx_item_ext
+    description: Item master extn dimension.
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null        
+  
+
+  - name: dim_wbx_lot
+    description: Lot master dimension
+          - unique
+          - not_null
+
+  - name: dim_wbx_work_center
+    description: work center dimension
+    columns:
+      - name: WORK_CENTER_CODE
+        description: code for work center
+        tests:
+          - not_null        
+
+  - name: dim_wbx_sls_item_category
+    description: Item Sales Category data
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null          
+  - name: dim_wbx_prc_item_category
+    description: Item Procurement Category data
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null          
+  - name: dim_wbx_prc_supplier_categorization
+    description: supplier Category data
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null  
+
+  - name: dim_wbx_supplier_category
+    description: address Supplier Category data
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_wbx_mfg_item_variant
+    description: item variant data
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique
+          - not_null
+      - name: item_guid
+        description: The system generated unique identifier for Item.
+        tests:
+          - relationships:  
+              to: ref('dim_wbx_item')  
+              field: ITEM_GUID
+

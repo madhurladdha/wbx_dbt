@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: fct_wbx_mfg_supply_sched_dly
+    description: Weetabix Inventory Supply Schedule Daily .
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique:
+              config:
+                severity: warn
+                warn_if: ">1"
+          - not_null                         
+      - name: item_guid
+        description: The system generated unique identifier for Weetabix Account .
+        tests:
+          - relationships:  
+              to: ref('dim_wbx_item')  
+              field: item_guid
+              config:
+                severity: warn
+                warn_if: ">1" 
+      - name: business_unit_address_guid
+        description: The system generated unique identifier for Business Unit.
+        tests:
+          - relationships:  
+              to: ref('dim_wbx_plant_dc')  
+              field: plantdc_address_guid
+              config:
+                severity: warn
+                warn_if: ">1"

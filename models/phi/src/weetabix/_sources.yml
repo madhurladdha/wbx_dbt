@@ -1,0 +1,929 @@
+version: 2
+
+sources:
+  - name: D365
+    database: "POSTSNOWD"
+    schema: "{{env_var('DBT_SRC_D365_SCHEMA')}}"
+    tables:
+      - name: data_area
+      - name: invent_site
+      - name: invent_location
+      - name: invent_location_logistics_location
+      - name: logistics_postal_address
+      - name: dimension_financial_tag
+      - name: dir_party_table
+      - name: accounting_distribution
+      - name: sales_line
+      - name: sales_table
+      - name: cust_invoice_jour
+      - name: cust_packing_slip_trans
+      - name: cust_invoice_trans
+      - name: dimension_attribute      
+      - name: invent_dim
+      - name: cust_confirm_trans
+      - name: cust_confirm_jour
+      - name: wbx_cust_table_ext
+      - name: wbx_so_cancel_reason_table
+      - name: dimension_attribute_value_set_item
+      - name: dimension_attribute_value
+      - name: wms_picking_route
+      - name: dimension_attribute_level_value      
+      - name: dimension_attribute_value_group_combination   
+      - name: dimension_focus_balance
+      - name: dimension_focus_ledger_dimension_reference
+      - name: cust_packing_slip_jour
+      - name: mcrhold_code_trans
+      - name: invent_table
+      - name: invent_item_group_item
+      - name: invent_item_purch_setup
+      - name: invent_item_sales_setup
+      - name: invent_table_module
+      - name: invent_trans
+      - name: prod_route
+      - name: prod_table
+      - name: eco_res_product_translation
+      - name: invent_batch
+      - name: invent_trans_origin
+      - name: paym_term
+      - name: wrk_ctr_table
+      - name: unit_of_measure
+      - name: unit_of_measure_conversion
+      - name: whsphys_dim_uom
+      - name: agreement_classification
+      - name: fiscal_calendar
+      - name: fiscal_calendar_period
+      - name: fiscal_calendar_year
+      - name: hcm_worker
+      - name: proj_sorting
+      - name: proj_table
+      - name: srsanalysis_enums
+      - name: eco_res_product
+      - name: eco_res_product_variant_dimension_value
+      - name: eco_res_size
+      - name: forecast_item_allocation_line
+      - name: forecast_sales
+      - name: invent_dim_combination
+      - name: bom
+      - name: bomversion
+      - name: invent_model_group_item
+      - name: vend_table
+      - name: vend_group
+      - name: vend_invoice_jour
+      - name: vend_invoice_trans
+      - name: vend_packing_slip_trans
+      - name: vend_settlement
+      - name: vend_trans
+      - name: whswork_quarantine
+      - name: work_period_template
+      - name: work_period_template_line
+      - name: wrk_ctr_activity
+      - name: wrk_ctr_activity_requirement
+      - name: wrk_ctr_activity_requirement_set
+      - name: wrk_ctr_activity_resource_requirement
+      - name: wrk_ctr_prod_route_activity
+      - name: dimension_attribute_dir_category
+      - name: eco_res_attribute_type
+      - name: eco_res_attribute
+      - name: eco_res_attribute_value
+      - name: hcm_position
+      - name: hcm_position_hierarchy
+      - name: hcm_position_worker_assignment
+      - name: invent_item_price
+      - name: invent_item_price_sim
+      - name: invent_sum
+      - name: proj_budget_line
+      - name: whsfilters
+      - name: whsinvent_table
+      - name: whswork_invent_trans
+      - name: invent_item_barcode
+      - name: invent_journal_table
+      - name: invent_journal_trans
+      - name: invent_trans_origin_prod_table
+      - name: invent_trans_posting
+      - name: price_disc_table
+      - name: prod_route_job
+      - name: prod_table_jour
+      - name: cust_table
+      - name: agreement_header
+      - name: agreement_line
+      - name: agreement_line_released_line
+      - name: bomcalc_table
+      - name: bomcalc_trans
+      - name: cust_settlement
+      - name: cust_trans
+      - name: purch_line
+      - name: purch_parm_line
+      - name: purch_parm_table
+      - name: purch_table
+      - name: subledger_voucher_general_journal_entry
+      - name: logistics_address_state
+      - name: ledger
+      - name: main_account
+      - name: main_account_category
+      - name: dimension_attribute_value_combination
+      - name: dimension_hierarchy
+      - name: dir_person_user
+      - name: general_journal_account_entry
+      - name: general_journal_entry
+      - name: ledger_entry_journal
+      - name: ledger_journal_table
+      - name: reason_table_ref
+      - name: req_plan_version
+      - name: req_po
+      - name: req_trans
+      - name: wbxcust_market
+      - name: wbxcust_submarket
+      - name: wbxcust_trade_class
+      - name: wbxcust_trade_group
+      - name: wbxcust_trade_sector
+      - name: wbxcust_trade_type
+      - name: ledger_entry
+      - name: fin_tag
+      - name: eco_res_product_instance_value
+      - name: eco_res_text_value
+      - name: eco_res_int_value
+      - name: eco_res_float_value
+      - name: eco_res_boolean_value
+      - name: eco_res_date_time_value
+      - name: eco_res_reference_value
+      - name: wbxcustomer_allowed_list
+      
+
+
+
+      
+  - name: WEETABIX
+    database: "{{env_var('DBT_SRC_DB')}}"
+    schema: "{{env_var('DBT_SRC_WBX_SCHEMA')}}"
+    tables:
+      - name: accountingdistribution
+      - name: accountingevent
+      - name: agreementclassification
+      - name: agreementheader
+      - name: agreementline
+      - name: agreementlinereleasedline
+      - name: banktranstype
+      - name: batchjob
+      - name: batchjobhistory
+      - name: bom
+      - name: bomcalcgroup
+      - name: bomcalciteminventorydimtask
+      - name: bomcalcitemtask
+      - name: bomcalctable
+      - name: bomcalctrans
+      - name: bomcalctransdetail
+      - name: bomtable
+      - name: bomversion
+      - name: budgetcontrolbudgetcycle
+      - name: commissioncustomergroup
+      - name: companydefaultlocation
+      - name: contactperson
+      - name: costcontroltranscommittedcostcube
+      - name: costsheetcostgroupimpact
+      - name: currency
+      - name: custaging
+      - name: custaginglegalentity
+      - name: custagingline
+      - name: custconfirmjour
+      - name: custconfirmsaleslink
+      - name: custconfirmtrans
+      - name: custdefaultlocation
+      - name: custgroup
+      - name: custinvoicejour
+      - name: custinvoiceline
+      - name: custinvoicesaleslink
+      - name: custinvoicetable
+      - name: custinvoicetrans
+      - name: custledger
+      - name: custpackingslipjour
+      - name: custpackingsliptrans
+      - name: custpaymmodetable
+      - name: custsettlement
+      - name: custtable
+      - name: custtrans
+      - name: custtransopen
+      - name: custvendexternalitem
+      - name: custvenditemgroup
+      - name: dataarea
+      - name: dbix_tbldimchartofaccounts
+      - name: DBIX_tblDimCostCentre
+        quoting:
+         identifier: true
+      - name: dbix_tblrefaxledgertable
+      - name: dimattributeomcostcenter
+      - name: dimattributeomdepartment
+      - name: dimensionattribute
+      - name: dimensionattributedircategory
+      - name: dimensionattributelevelvalue
+      - name: dimensionattributelevelvalueview
+      - name: dimensionattributevalue
+      - name: dimensionattributevaluecombo
+      - name: dimensionattributevaluegroup
+      - name: dimensionattributevalueset
+      - name: dimensionattributevaluesetitem
+      - name: dimensionattributevaluesitemv
+      - name: dimensionattributevaluetransl
+      - name: dimensionattrvaluegroupcombo
+      - name: dimensionfinancialtag
+      - name: dimensionfocusbalance
+      - name: dimensionfocusledgerdimref
+      - name: dimensionfocusunproctrans
+      - name: dimensionhierarchy
+      - name: dim_attributevaluesetitem_view
+      - name: dirpartylocation
+      - name: dirpartylocationrole
+      - name: dirpartypostaladdressview
+      - name: dirpartyrelationship
+      - name: dirpartytable
+      - name: dirpersonname
+      - name: dirpersonuser
+      - name: dirrelationshiptypetable
+      - name: dlvmode
+      - name: dlvterm
+      - name: ecoresattribute
+      - name: ecoresattributetranslation
+      - name: ecoresattributevalue
+      - name: ecorescategory
+      - name: ecorescategoryhierarchy
+      - name: ecorescategoryhierarchyrole
+      - name: ecoresconfiguration
+      - name: ecoresproduct
+      - name: ecoresproductcategory
+      - name: ecoresproductdimensiongroup
+      - name: ecoresproductidentifier
+      - name: ecoresproductmasterdimval
+      - name: ecoresproductmasterdimvaltran
+      - name: ecoresproducttranslation
+      - name: ecoresproductvariantdimvalue
+      - name: ecoressize
+      - name: ecorestrackingdimensiongroup
+      - name: exchangerate
+      - name: exchangeratecurrencypair
+      - name: exchangeratetype
+      - name: EXC_Dim_Audit_Log
+      - name: EXC_Dim_Calendar
+      - name: EXC_Dim_Currency
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Currency_Exchange_Options
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Customer_Attributes
+      - name: EXC_Dim_Customer_Hierarchies
+      - name: EXC_Dim_Customer_Levels
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Customer_Measures
+        quoting:
+         identifier: true
+      - name: EXC_Dim_PC_Customer
+        quoting:
+         identifier: true
+      - name: EXC_Dim_PC_Product
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Planning_Volume_MeasureGroups
+      - name: EXC_Dim_Planning_Volume_Measures
+      - name: EXC_Dim_Product_Hierarchies
+      - name: EXC_Dim_Product_Levels
+      - name: EXC_Dim_Product_Sku
+      - name: EXC_Dim_Product_Sku_Attributes
+      - name: EXC_Dim_Product_Sku_Cust_Attributes
+      - name: EXC_Dim_Product_Sku_Cust_Measures
+      - name: EXC_Dim_Product_Sku_Measures
+      - name: EXC_Dim_Promotion_Attribute
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Promotion_AttributeGroup
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Promotion_Dates
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Promotion_Measures
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Promotion_Measures_MetaData
+      - name: EXC_Dim_Promotion_Mechanic
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Promotion_Mechanic_Group
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Promotion_Mechanic_L1
+        quoting:
+         identifier: true     
+      - name: "EXC_Dim_Promotion_Phasing"
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Promotion_Phasing_Effect
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Promotion_Phasing_Type
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Promotion_Statuses
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Promotions
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Promotions_Group
+        quoting:
+         identifier: true
+      - name: EXC_Dim_ROB
+        quoting:
+         identifier: true
+      - name: EXC_Dim_ROBGroup
+      - name: EXC_Dim_ROBGroup_Measures
+      - name: EXC_Dim_ROBGroup_Type
+      - name: EXC_Dim_ROB_AppType
+      - name: EXC_Dim_ROB_Comment_Type
+      - name: EXC_Dim_ROB_Impact
+        quoting:
+         identifier: true
+      - name: EXC_Dim_ROB_ImpactOption
+        quoting:
+         identifier: true
+      - name: EXC_Dim_ROB_Statuses
+        quoting:
+         identifier: true
+      - name: EXC_Dim_ROB_SubType
+      - name: EXC_Dim_ROB_Type
+      - name: EXC_Dim_ROB_Workflow_Template
+      - name: EXC_Dim_Scenario
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Scenario_Status
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Scenario_Types
+        quoting:
+         identifier: true
+      - name: EXC_Dim_Users
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Account_Plan
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Account_Plan_Actual
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Account_Plan_Closed
+      - name: EXC_Fact_Account_Plan_Working
+      - name: EXC_Fact_Audit_Promotion_Customer_Product_Measure
+      - name: EXC_Fact_Audit_Promotion_Dates
+      - name: EXC_Fact_Audit_Promotion_Status
+      - name: EXC_Fact_Currency_Exchange_Rate
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Customer_Attribute
+      - name: EXC_Fact_PC_Customer
+        quoting:
+         identifier: true
+      - name: EXC_Fact_PC_Product
+      - name: EXC_Fact_Product_Sku_Cust_Measure
+      - name: EXC_Fact_Product_Sku_Measure
+      - name: EXC_Fact_Promotion_Attribute
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Promotion_Customer_Measure
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Promotion_Customer_Product_Measure
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Promotion_Customer_SubLevel
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Promotion_Customers
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Promotion_Dates
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Promotion_Mechanic
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Promotion_PandL_PromoSkuDay
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Promotion_Phasing
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Promotion_Products
+      - name: EXC_Fact_Promotion_Scenario
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Promotion_Status
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Promotions_Group_Promotion
+        quoting:
+         identifier: true
+      - name: EXC_Fact_ROB_CustomerLevel
+      - name: EXC_Fact_ROB_Customers
+      - name: EXC_Fact_ROB_Dates
+        quoting:
+         identifier: true
+      - name: EXC_Fact_ROB_ImpactOption
+        quoting:
+         identifier: true
+      - name: EXC_Fact_ROB_ImpactOption_CustSku
+        quoting:
+         identifier: true
+      - name: EXC_Fact_ROB_LumpSum_Spread_CustSkuDay
+        quoting:
+         identifier: true
+      - name: EXC_Fact_ROB_ProductLevel
+      - name: EXC_Fact_ROB_Products
+      - name: EXC_Fact_ROB_Scenario
+        quoting:
+         identifier: true
+      - name: EXC_Fact_ROB_Status
+        quoting:
+         identifier: true
+      - name: EXC_Fact_ROB_SubType
+      - name: EXC_Fact_StealSku
+        quoting:
+         identifier: true
+      - name: EXC_Fact_Volume_Cache
+        quoting:
+         identifier: true
+      - name: EXC_SYS_Queue_AccountPlanBuild
+      - name: fiscalcalendar
+      - name: fiscalcalendarperiod
+      - name: fiscalcalendaryear
+      - name: forecastitemallocationline
+      - name: forecastmodel
+      - name: forecastsales
+      - name: fact_promotion_pandl_promoskuday
+      - name: generaljournalaccountentry
+      - name: generaljournalentry
+      - name: hcmposition
+      - name: hcmpositionhierarchy
+      - name: hcmpositionworkerassignment
+      - name: hcmworker
+      - name: hierarchy
+      - name: hierarchylinktable
+      - name: hierarchytreetable
+      - name: intercompanyinventdim
+      - name: intercompanyinventsum
+      - name: intercompanytradingrelation
+      - name: inventbatch
+      - name: inventbuyergroup
+      - name: inventcosttransvariance
+      - name: inventcountjour
+      - name: inventdim
+      - name: inventdimcombination
+      - name: inventitembarcode
+      - name: inventitemcostgrouprollup
+      - name: inventitemgroup
+      - name: inventitemgroupitem
+      - name: inventiteminventsetup
+      - name: inventitemlocation
+      - name: inventitemprice
+      - name: inventitempricesim
+      - name: inventitempurchsetup
+      - name: inventitemsalessetup
+      - name: inventjournalname
+      - name: inventjournaltable
+      - name: inventjournaltrans
+      - name: inventlocation
+      - name: inventlocationdefaultlocation
+      - name: inventlocationlogisticsloc
+      - name: inventmodelgroupitem
+      - name: inventnonconformanceorigin
+      - name: inventorderentrydeadlinetable
+      - name: inventposting
+      - name: inventsite
+      - name: inventsitelogisticslocation
+      - name: inventstrategiccode
+      - name: inventsum
+      - name: inventsumdatefinancialdim_ru
+      - name: inventsumdatefinancialtrans_ru
+      - name: inventsumdatetable
+      - name: inventsumdatetrans
+      - name: inventsumdelta
+      - name: inventsumdeltadim
+      - name: inventsumlogtts
+      - name: inventtable
+      - name: inventtableexpanded
+      - name: inventtablemodule
+      - name: inventtestvariableoutcome
+      - name: inventtrans
+      - name: inventtransferjour
+      - name: inventtransferjourline
+      - name: inventtransferline
+      - name: inventtransferparmline
+      - name: inventtransfertable
+      - name: inventtransorigin
+      - name: inventtransoriginprodtable
+      - name: inventtransoriginpurchline
+      - name: inventtransoriginsalesline
+      - name: inventtransorigintransfer
+      - name: inventtransoriginwmsorder
+      - name: inventtransposting
+      - name: isocurrencycode
+      - name: ledger
+      - name: ledgerallocationrule
+      - name: ledgerchartofaccounts
+      - name: ledgerentry
+      - name: ledgerentryjournal
+      - name: ledgerfiscalcalendarperiod
+      - name: ledgerintercompany
+      - name: ledgerjournalname
+      - name: ledgerjournaltable
+      - name: ledgerjournaltrans
+      - name: ledgertransaccounttmp
+      - name: ledgertranssettlement
+      - name: ledgertransvoucherlink
+      - name: logisticsaddresscountryregion
+      - name: logisticsaddresscounty
+      - name: logisticsaddressparameters
+      - name: logisticsaddressscity
+      - name: logisticsaddressstate
+      - name: logisticsaddresszipcode
+      - name: logisticslocation
+      - name: logisticslocationext
+      - name: logisticspostaladdress
+      - name: mainaccount
+      - name: mainaccountcategory
+      - name: mainaccountlegalentity
+      - name: mcrholdcodetrans
+      - name: MDS_TBLDIMBRANCHCHG
+        quoting:
+         identifier: true
+      - name: MDS_TBLDIMCOMMODITYCHG
+      - name: MDS_tblList
+      - name: MDS_tblModelVersion
+      - name: MDS_tblModelVersionFlag
+      - name: MDS_tblUser
+      - name: MDS_tbl_3_11_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_3_12_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_3_16_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_3_17_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_3_18_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_3_19_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_3_20_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_3_59_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_3_60_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_3_61_EN
+      - name: MDS_tbl_3_62_EN
+      - name: MDS_tbl_9_74_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_75_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_76_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_77_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_78_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_79_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_80_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_81_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_82_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_83_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_84_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_85_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_86_EN
+        quoting:
+         identifier: true
+      - name: MDS_tbl_9_87_EN
+      - name: MDS_tbl_9_88_EN
+      - name: omoperatingunitview
+      - name: partitions
+      - name: paymterm
+      - name: pdsdispositionmaster
+      - name: pricediscadmtable
+      - name: pricediscadmtrans
+      - name: pricedisctable
+      - name: prodbom
+      - name: prodcalctrans
+      - name: prodjournaltable
+      - name: prodroute
+      - name: prodroutejob
+      - name: prodtable
+      - name: prodtablejour
+      - name: produnittable
+      - name: projactivitycompletedcostview
+      - name: projbiempltrans
+      - name: projbiforecastempl
+      - name: projbudget
+      - name: projbudgetline
+      - name: projbudgetstatus
+      - name: projcategory
+      - name: projcategorygroup
+      - name: projfundingsource
+      - name: projgroup
+      - name: projinvoicejour
+      - name: projinvoicetable
+      - name: projprojectestimatesview
+      - name: projprojectplannedcostview
+      - name: projprojectplannedeffortview
+      - name: projsorting
+      - name: projtable
+      - name: projtransbudgetcube
+      - name: projtransposting
+      - name: projtranspostingcube
+      - name: purchcorpolicytable
+      - name: purchline
+      - name: purchlinehistory
+      - name: purchparmline
+      - name: purchparmtable
+      - name: purchtable
+      - name: reasontable
+      - name: reasontableref
+      - name: reqplanversion
+      - name: reqpo
+      - name: reqtrans
+      - name: salesconfirmdetailstmp
+      - name: salesdeliveryschedule
+      - name: salesline
+      - name: salesparmline
+      - name: salesparmsubtable
+      - name: salesparmtable
+      - name: salestable
+      - name: smmactivitiescube
+      - name: SRPT_AHT-Market
+      - name: SRPT_AHT-SubMarket
+      - name: SRPT_AHT-TmpXReference
+      - name: SRPT_AHT-TradeClass
+      - name: SRPT_AHT-TradeGroup
+      - name: SRPT_AHT-TradeSector
+      - name: SRPT_AHT-TradeType
+      - name: SRPT_BarsDetails
+      - name: SRPT_Budgets
+      - name: SRPT_CHT-Branding
+      - name: SRPT_CHT-Category
+      - name: SRPT_CHT-CombinedTotal
+      - name: SRPT_CHT-ExternalClass
+      - name: SRPT_CHT-PackSize
+      - name: SRPT_CHT-ProductClass
+      - name: SRPT_CHT-PromotionType
+      - name: SRPT_CHT-Source
+      - name: SRPT_CHT-SubCategory
+      - name: SRPT_CHT-SubProduct
+      - name: SRPT_COMMODITY FILE
+      - name: SRPT_COMMODITY HIERARCHY
+      - name: SRPT_ControlWeek
+      - name: SRPT_ControlWeek-ActsToKeyFcasts
+      - name: SRPT_EPOS
+      - name: SRPT_Forecast 001-ThisMon
+      - name: SRPT_Forecast 010-MidWeek
+      - name: SRPT_Forecast 015-Live
+      - name: SRPT_Forecast CurrWk-PromoSkuDetail
+      - name: SRPT_Forecast MidWk-PromoSkuDetail
+      - name: SRPT_FrozenForecasts_Volumes
+      - name: SRPT_Key Forecasts Table
+      - name: SRPT_Manufacturing Groups
+        quoting:
+         identifier: true
+      - name: SRPT_Manufacturing Groups SProd XRef
+      - name: SRPT_Marketing Groups
+        quoting:
+         identifier: true
+      - name: SRPT_Marketing Groups ProdClass XRef
+      - name: SRPT_P&L - Accts FrozFcast
+      - name: SRPT_P&L - Budgets
+      - name: SRPT_Period Table
+      - name: SRPT_QtrEnd CurrQtr-Forecast
+      - name: SRPT_QtrEnd Froz 1-Forecast
+      - name: SRPT_QtrEnd Froz 2-Forecast
+      - name: SRPT_QtrEnd Froz 3-Forecast
+      - name: SRPT_QtrEnd Froz 4-Forecast
+      - name: SRPT_RFF-Summary Stg2
+      - name: SRPT_Trade Type Hierarchy
+      - name: SRPT_Weeks Table
+      - name: SRPT_YearMonth
+      - name: SRPT_Years Table
+      - name: srsanalysisenums
+      - name: srsmodelentitycache
+      - name: subledgerjournalaccountentry
+      - name: subledgerjournalentry
+      - name: subledgerjournaltransferrule
+      - name: subledgervouchergeneraljournal
+      - name: tamvendrebateparameters
+      - name: tmsroutetable
+      - name: tmstransaction
+      - name: txt_base_entities
+      - name: txt_buckets
+      - name: txt_indicators
+      - name: txt_indicators_categories
+      - name: txt_indicators_formulas
+      - name: txt_markets
+      - name: txt_measure_data_279
+      - name: txt_measure_data_565
+      - name: txt_measure_data_638
+      - name: txt_measure_data_757
+      - name: txt_measure_data_holiday
+      - name: unitofmeasure
+      - name: unitofmeasureconversion
+      - name: unitofmeasureconversioncache
+      - name: unitofmeasureinternalcode
+      - name: unitofmeasuretranslation
+      - name: usergrouplist
+      - name: userinfo
+      - name: vendcategory
+      - name: venddefaultlocation
+      - name: vendgroup
+      - name: vendinvoiceinfo
+      - name: vendinvoiceinfoline
+      - name: vendinvoiceinfoline_project
+      - name: vendinvoiceinfotable
+      - name: vendinvoiceintrastat
+      - name: vendinvoicejour
+      - name: vendinvoicematching
+      - name: vendinvoicepurchlink
+      - name: vendinvoicetrans
+      - name: vendledger
+      - name: vendledgeraccounts
+      - name: vendpackingslipjour
+      - name: vendpackingsliptrans
+      - name: vendpaymmethodattribute
+      - name: vendpaymmodetable
+      - name: vendsettlement
+      - name: vendtable
+      - name: vendtrans
+      - name: vendtranscashdisc
+      - name: vendtransopen
+      - name: WBIX_tblDimCustomerChg
+      - name: WBIX_tblDimDate
+        quoting:
+         identifier: true
+      - name: WBIX_tblDimDummyProductClass
+      - name: WBIX_tblDimDummyProductClassVariant
+      - name: WBIX_tblDimDummyTradeTypes
+      - name: WBIX_tblDimFGItemChg
+      - name: WBIX_tblDimFGItemVariant
+      - name: WBIX_tblDimForecasts
+      - name: WBIX_tblDimPCOST
+      - name: WBIX_tblDimProductClassChg
+      - name: WBIX_tblDimProductSubProductChg
+      - name: WBIX_tblDimTradeTypeChg
+      - name: WBIX_tblDummyProductSubProduct
+      - name: WBIX_tblFactCARPActuals
+      - name: WBIX_tblFactForecastFinance
+      - name: WBIX_tblFactForecastPromotions
+      - name: WBIX_tblFactForecasts
+      - name: WBIX_tblRefTradeTypeRatios
+      - name: wbxcustcertificates
+      - name: wbxcustomerallowedproducts
+      - name: wbxcustomerstaginginprocess
+      - name: wbxcusttableext
+      - name: wbxdiscountgranted
+      - name: wbxdiscountgrantedadditional
+      - name: wbxinventtableext
+      - name: wbxsocancelreasontable
+      - name: wbxsostocktransactions
+      - name: whsasnitem
+      - name: whscusttable
+      - name: whscyclecountplan
+      - name: whscyclecountplanoverview
+      - name: whsfilterparm
+      - name: whsfilters
+      - name: whsinventtable
+      - name: whsinventtransferline
+      - name: whsloadline
+      - name: whslocationprofile
+      - name: whslocdirhint
+      - name: whsphysdimuom
+      - name: whspurchline
+      - name: whsreservationhierarchyelement
+      - name: whsreservationhierarchyitem
+      - name: whssalesline
+      - name: whsshipmentexceptionlog
+      - name: whsuomseqgroupline
+      - name: whsuomseqgrouptable
+      - name: whsworkclasstable
+      - name: whsworker
+      - name: whsworkinventtrans
+      - name: whsworkquarantine
+      - name: whsworktemplategroup
+      - name: whsworkuserwarehouse
+      - name: wmsjournaltrans
+      - name: wmslocation
+      - name: wmslocationload
+      - name: wmspickingroute
+      - name: wmspickingroutelink
+      - name: workperiodtemplate
+      - name: workperiodtemplateline
+      - name: wrkctractivity
+      - name: wrkctractivityrequirement
+      - name: wrkctractivityrequirementset
+      - name: wrkctractivityresourcerqurmnt
+      - name: wrkctrprodrouteactivity
+      - name: wrkctrresourcegroup
+      - name: wrkctrresourcegroupresource
+      - name: wrkctrtable
+      - name: xrefnames
+      - name: xrefreferences
+      - name: xreftablerelation
+      - name: DBIX_tblDimChartOfAccounts
+        quoting:
+         identifier: true
+      - name: DBIX_tblRefAXLedgerTable   
+        quoting:
+         identifier: true
+
+  - name: WBX_PROD
+    database: "{{env_var('DBT_SRC_WBX_DB')}}"
+    schema: "{{env_var('DBT_SRC_DIM_SCHEMA')}}"
+    tables:
+      - name: dim_wbx_plant_dc
+      - name: dim_wbx_company
+      - name: dim_wbx_supplier
+      - name: dim_wbx_lot
+      - name: dim_wbx_customer
+      - name: dim_wbx_location
+      - name: dim_wbx_item
+      - name: dim_wbx_sls_item_category
+      - name: dim_wbx_promo
+      - name: dim_wbx_business_rep
+      - name: dim_wbx_address
+      - name: dim_wbx_customer_ext
+      - name: dim_wbx_supplier_category
+      - name: dim_wbx_mfg_item_variant
+      - name: dim_wbx_fin_onestream
+      - name: dim_wbx_fin_onestream_month
+      - name: dim_wbx_prc_item_category
+      - name: dim_wbx_uom
+      - name: dim_wbx_item_ext
+      - name: dim_wbx_project
+      - name: dim_wbx_scenario
+      - name: dim_wbx_prc_supplier_categorization
+      - name: dim_wbx_account
+      - name: xref_wbx_payment_terms
+
+  - name: WBX_PROD_FACT
+    database: "{{env_var('DBT_SRC_WBX_DB')}}"
+    schema: "{{env_var('DBT_SRC_FACT_SCHEMA')}}"
+    tables:
+      - name: fct_wbx_sls_order
+      - name: fct_wbx_sls_order_hdr
+      - name: fct_wbx_fin_gl_trans
+      - name: fct_wbx_fin_gl_mnthly_acctbal
+      - name: fct_wbx_fin_prc_po
+      - name: fct_wbx_fin_prc_po_receipt
+      - name: fct_wbx_fin_ap_payment_dtl
+      - name: fct_wbx_fin_ap_voucher
+      - name: fct_wbx_fin_ap_voucher_hdr
+      - name: fct_wbx_fin_ar_cust_invoice
+      - name: fct_wbx_fin_ar_custinv_hdr  
+      - name: fct_wbx_fin_ar_receipt_detail
+      - name: fct_wbx_mfg_cbom
+      - name: fct_wbx_mfg_monthly_bom_snapshot
+      - name: fct_wbx_inv_trans_ledger
+      - name: fct_wbx_inv_mnthly_ldgr
+      - name: fct_wbx_inv_daily_balance
+      - name: fct_wbx_inv_aging
+      - name: fct_wbx_sls_gl_dni
+      - name: fct_wbx_sls_gl_pcos_ppv
+      - name: fct_wbx_sls_gl_pcos_std_je
+      - name: fct_wbx_sls_gl_trade
+
+
+  - name: WBX_PROD_SRC
+    database: "{{env_var('DBT_SRC_WBX_DB')}}" 
+    schema: "{{env_var('DBT_SRC_SCHEMA')}}"
+    tables:
+      - name: SRC_VENDTABLE
+      

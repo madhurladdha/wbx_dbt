@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: fct_wbx_mfg_demand_comp_agg
+    description: fct_wbx_mfg_demand_comp_agg.
+    columns:
+      - name: wo_src_item_guid
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_item')  
+              field: item_guid
+
+      - name: wo_business_unit_guid 
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_plant_dc')  
+              field: plantdc_address_guid
+
+      - name: comp_src_item_guid
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_item')  
+              field: item_guid
+
+      - name: comp_business_unit_guid 
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_plant_dc')  
+              field: plantdc_address_guid

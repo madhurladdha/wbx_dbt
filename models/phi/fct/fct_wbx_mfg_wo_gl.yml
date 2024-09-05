@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: fct_wbx_mfg_wo_gl
+    columns:
+      - name: unique_key
+        tests:
+          - unique
+      - name: account_guid 
+        tests:  
+        - relationships:  
+            to: ref('dim_wbx_account')  
+            field: account_guid

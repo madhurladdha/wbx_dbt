@@ -1,0 +1,5 @@
+version: 2
+
+models:
+    - name: conv_adr_plant_dc_master_dim
+      description: "Plant/distirbution center master dimension."

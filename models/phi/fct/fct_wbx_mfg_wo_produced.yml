@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: fct_wbx_mfg_wo_produced
+    columns:
+      - name: unique_key
+        tests:
+          - unique
+
+      - name: business_unit_address_guid 
+        tests:  
+        - relationships:  
+            to: ref('dim_wbx_plant_dc')  
+            field: plantdc_address_guid
+
+      - name: item_guid 
+        tests:  
+        - relationships:  
+            to: ref('dim_wbx_item')  
+            field: item_guid
+
+      - name: customer_address_number_guid
+        description: customer id from dim
+        tests:
+          - relationships:  
+              to: ref('dim_wbx_customer')  
+              field: customer_address_number_guid

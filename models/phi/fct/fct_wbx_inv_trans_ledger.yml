@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: fct_wbx_inv_trans_ledger
+    description: TODO
+    columns:
+      - name: unique_key
+        description: TODO
+        tests:
+          - unique:
+              config:
+                severity: warn
+                warn_if: ">1"                
+
+      - name: item_guid 
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_item')  
+              field: ITEM_GUID
+              config:
+                severity: warn
+                warn_if: ">1" 
+
+
+      - name: location_guid 
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_location')  
+              field: LOCATION_GUID
+              config:
+                severity: warn
+                warn_if: ">1"                 
+
+      - name: lot_guid 
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_lot')  
+              field: LOT_GUID
+              config:
+                severity: warn
+                warn_if: ">1"  
+
+      - name: business_unit_address_guid 
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_plant_dc')  
+              field: PLANTDC_ADDRESS_GUID
+              config:
+                severity: warn
+                warn_if: ">1"

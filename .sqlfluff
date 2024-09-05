@@ -1,0 +1,335 @@
+[sqlfluff]
+# verbose is an integer (0-2) indicating the level of log output
+verbose = 1
+
+# Turn off color formatting of output
+nocolor = False
+
+# Supported dialects https://docs.sqlfluff.com/en/stable/dialects.html
+# Or run 'sqlfluff dialects'
+dialect = snowflake
+
+# This change (from jinja to dbt templater) will make linting slower
+# because linting will first compile dbt code into data warehouse code.
+templater = dbt
+
+# Comma separated list of rules to check, default to all
+rules = AL01,AL02,AL03,AL04,AL05,AL06,AL07,AL08,CP01,CP02,CP03,CP04,CP05,LT01,LT02,LT04,LT05,LT06,LT07,LT08,LT09,LT10,LT11,CP01,CP02,CP03,CP04,CP05,AM01,AM07,L051,L054,RF01,RF02,RF03,ST03,ST05,ST07,ST08,JJ01
+
+# Comma separated list of rules to exclude, or None
+# exclude_rules = None
+
+# Below controls SQLFluff output, see max_line_length for SQL output
+output_line_length = 120
+
+# Number of passes to run before admitting defeat
+runaway_limit = 10
+
+# Ignore errors by category (one or more of the following, separated by commas: lexing,linting,parsing,templating)
+ignore = parsing,templating
+
+# Warn only for rule codes (one of more rule codes, seperated by commas: e.g. LT01,LT02)
+# Also works for templating and parsing errors by using TMP or PRS
+warnings = TMP,PRS
+
+# Whether to warn about unneeded '-- noqa:' comments.
+warn_unused_ignores = False
+
+# Ignore inline overrides (e.g. to test if still required)
+disable_noqa = False
+
+# Very large files can make the parser effectively hang.
+# The more efficient check is the _byte_ limit check which
+# is enabled by default. The previous _character_ limit check
+# is still present for backward compatibility. This will be
+# removed in a future version.
+# Set either to 0 to disable.
+#large_file_skip_char_limit = 0
+large_file_skip_byte_limit = 0
+
+# CPU processes to use while linting.
+# If positive, just implies number of processes.
+# If negative or zero, implies number_of_cpus - specified_number.
+# e.g. -1 means use all processors but one. 0  means all cpus.
+processes = 1
+
+[sqlfluff:templater:jinja:context]
+env_var='var'
+DBT_SRC_SCHEMA='SRC'
+DBT_STG_SCHEMA='STG'
+DBT_DIM_SCHEMA='DIM'
+DBT_FACT_SCHEMA='FACT'
+DBT_DIM_LEGACY_SCHEMA='EI_RDM'
+DBT_RPT_SCHEMA='RPT'
+DBT_RPT_LEGACY_SCHEMA='R_EI_SYSADM'
+DBT_TEST_SCHEMA='TEST'
+DBT_ARTIFACTS_SCHEMA='DBT_ARTIFACTS'
+DBT_TGT_DB='WBX_PROD'
+DBT_MAT_TABLE='table'
+DBT_MAT_VIEW='view'
+DBT_STORE_TEST_RESULTS='NO'
+DBT_RZ_SCHEMA='REDZONE'
+
+[sqlfluff:indentation]
+# See https://docs.sqlfluff.com/en/stable/layout.html#configuring-indent-locations
+indent_unit = space
+tab_space_size = 4
+indented_joins = False
+indented_ctes = False
+indented_using_on = True
+indented_on_contents = True
+indented_then = True
+indented_then_contents = True
+allow_implicit_indents = False
+template_blocks_indent = True
+
+# Layout configuration
+# See https://docs.sqlfluff.com/en/stable/layout.html#configuring-layout-and-spacing
+[sqlfluff:layout:type:comma]
+spacing_before = touch
+line_position = trailing
+
+[sqlfluff:layout:type:binary_operator]
+spacing_within = touch
+line_position = leading
+
+[sqlfluff:layout:type:statement_terminator]
+spacing_before = touch
+line_position = trailing
+
+[sqlfluff:layout:type:end_of_file]
+spacing_before = touch
+
+[sqlfluff:layout:type:set_operator]
+line_position = alone:strict
+
+[sqlfluff:layout:type:start_bracket]
+spacing_after = touch
+
+[sqlfluff:layout:type:end_bracket]
+spacing_before = touch
+
+[sqlfluff:layout:type:start_square_bracket]
+spacing_after = touch
+
+[sqlfluff:layout:type:end_square_bracket]
+spacing_before = touch
+
+[sqlfluff:layout:type:start_angle_bracket]
+spacing_after = touch
+
+[sqlfluff:layout:type:end_angle_bracket]
+spacing_before = touch
+
+[sqlfluff:layout:type:casting_operator]
+spacing_before = touch
+spacing_after = touch:inline
+
+[sqlfluff:layout:type:slice]
+spacing_before = touch
+spacing_after = touch
+
+[sqlfluff:layout:type:dot]
+spacing_before = touch
+spacing_after = touch
+
+[sqlfluff:layout:type:comparison_operator]
+spacing_within = touch
+line_position = leading
+
+[sqlfluff:layout:type:assignment_operator]
+spacing_within = touch
+line_position = leading
+
+[sqlfluff:layout:type:object_reference]
+spacing_within = touch:inline
+
+[sqlfluff:layout:type:numeric_literal]
+spacing_within = touch:inline
+
+[sqlfluff:layout:type:sign_indicator]
+spacing_after = touch:inline
+
+[sqlfluff:layout:type:tilde]
+spacing_after = touch:inline
+
+[sqlfluff:layout:type:function_name]
+spacing_within = touch:inline
+spacing_after = touch:inline
+
+[sqlfluff:layout:type:array_type]
+spacing_within = touch:inline
+
+[sqlfluff:layout:type:typed_array_literal]
+spacing_within = touch
+
+[sqlfluff:layout:type:sized_array_type]
+spacing_within = touch
+
+[sqlfluff:layout:type:struct_type]
+spacing_within = touch:inline
+
+[sqlfluff:layout:type:bracketed_arguments]
+spacing_before = touch:inline
+
+[sqlfluff:layout:type:typed_struct_literal]
+spacing_within = touch
+
+[sqlfluff:layout:type:semi_structured_expression]
+spacing_within = touch:inline
+spacing_before = touch:inline
+
+[sqlfluff:layout:type:array_accessor]
+spacing_before = touch:inline
+
+[sqlfluff:layout:type:colon]
+spacing_before = touch
+
+[sqlfluff:layout:type:colon_delimiter]
+spacing_before = touch
+spacing_after = touch
+
+[sqlfluff:layout:type:path_segment]
+spacing_within = touch
+
+[sqlfluff:layout:type:sql_conf_option]
+spacing_within = touch
+
+[sqlfluff:layout:type:sqlcmd_operator]
+# NOTE: This is the spacing between the operator and the colon
+spacing_before = touch
+
+[sqlfluff:layout:type:comment]
+spacing_before = any
+spacing_after = any
+
+[sqlfluff:layout:type:pattern_expression]
+# Snowflake pattern expressions shouldn't have their spacing changed.
+spacing_within = any
+
+[sqlfluff:layout:type:placeholder]
+# Placeholders exist "outside" the rendered SQL syntax
+# so we shouldn't enforce any particular spacing around
+# them.
+spacing_before = any
+spacing_after = any
+
+[sqlfluff:layout:type:common_table_expression]
+# The definition part of a CTE should fit on one line where possible.
+# For users which regularly define column names in their CTEs they
+# may which to relax this config to just `single`.
+spacing_within = single:inline
+
+# By setting a selection of clauses to "alone", we hint to the reflow
+# algorithm that in the case of a long single line statement, the
+# first place to add newlines would be around these clauses.
+# Setting this to "alone:strict" would always _force_ line breaks
+# around them even if the line isn't too long.
+[sqlfluff:layout:type:select_clause]
+line_position = alone
+
+[sqlfluff:layout:type:where_clause]
+line_position = alone
+
+[sqlfluff:layout:type:from_clause]
+line_position = alone
+
+[sqlfluff:layout:type:join_clause]
+line_position = alone
+
+[sqlfluff:layout:type:groupby_clause]
+line_position = alone
+
+[sqlfluff:layout:type:orderby_clause]
+# NOTE: Order by clauses appear in many places other than in a select
+# clause. To avoid unexpected behaviour we use `leading` in this
+# case rather than `alone`.
+line_position = leading
+
+[sqlfluff:layout:type:having_clause]
+line_position = alone
+
+[sqlfluff:layout:type:limit_clause]
+line_position = alone
+
+[sqlfluff:rules:capitalisation.keywords]
+# Keywords
+capitalisation_policy = lower
+# Comma separated list of words to ignore for this rule
+ignore_words = None
+ignore_words_regex = ^env_var\('DBT_'\)$
+
+[sqlfluff:rules:capitalisation.identifiers]
+# Unquoted identifiers
+extended_capitalisation_policy = consistent
+# Comma separated list of words to ignore for this rule
+ignore_words = None
+ignore_words_regex = None
+
+[sqlfluff:rules:capitalisation.functions]
+# Function names
+extended_capitalisation_policy = consistent
+# Comma separated list of words to ignore for this rule
+ignore_words = None
+ignore_words_regex = None
+
+[sqlfluff:rules:capitalisation.literals]
+# Null & Boolean Literals
+capitalisation_policy = consistent
+# Comma separated list of words to ignore for this rule
+ignore_words = None
+ignore_words_regex = None
+
+[sqlfluff:rules:capitalisation.types]
+# Data Types
+extended_capitalisation_policy = consistent
+# Comma separated list of words to ignore for this rule
+ignore_words = None
+ignore_words_regex = None
+
+
+[sqlfluff:rules:aliasing.table]
+# Aliasing preference for tables
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.column]
+# Aliasing preference for columns
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.length]
+min_alias_length = None
+max_alias_length = None
+
+[sqlfluff:rules:aliasing.forbid]
+# Avoid table aliases in from clauses and join conditions.
+# Disabled by default for all dialects unless explicitly enabled.
+# We suggest instead using aliasing.length (AL06) in most cases.
+force_enable = False
+
+[sqlfluff:rules:ambiguous.distinct]
+# Fully qualify JOIN clause
+fully_qualify_join_types = inner
+
+[sqlfluff:rules:ambiguous.column_references]
+# GROUP BY/ORDER BY column references
+group_by_and_order_by_style = consistent
+
+[sqlfluff:rules:references.from]
+# References must be in FROM clause
+# Disabled for some dialects (e.g. bigquery)
+force_enable = True
+
+[sqlfluff:rules:references.qualification]
+# Comma separated list of words to ignore for this rule
+ignore_words = None
+ignore_words_regex = None
+
+[sqlfluff:rules:references.consistent]
+# References must be consistently used
+# Disabled for some dialects (e.g. bigquery)
+force_enable = True
+single_table_references = consistent
+
+[sqlfluff:rules:structure.subquery]
+# By default, allow subqueries in from clauses, but not join clauses
+forbid_subquery_in = join

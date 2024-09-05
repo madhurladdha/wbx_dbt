@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: DIM_ENT
+    database: "{{env_var('DBT_SRC_ENT_DB')}}"
+    schema: 'DIM'
+    tables:
+      - name: dim_date
+      - name: dim_effective_currency
+      - name: v_dim_effective_currency
+      - name: dim_exchange_rate_dly
+      - name: v_dim_exchange_rate_dly
+      - name: dim_exchange_rate_mth
+      - name: v_dim_exchange_rate_mth
+      - name: itm_procurement_category_ext_stg
+      - name: dim_supplier_category

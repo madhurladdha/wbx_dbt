@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: fct_wbx_fin_ar_custinv_hdr
+    description: AR Customer Invoice Header.
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique:
+              config:
+                severity: warn
+                warn_if: ">1"
+          - not_null              
+      - name: company_code
+        tests: 
+          - not_null:
+              config:
+                severity: warn
+                warn_if: ">1"                
+      - name: document_type 
+        tests: 
+          - not_null:
+              config:
+                severity: warn
+                warn_if: ">1"                
+      - name: document_number 
+        tests: 
+          - not_null:
+              config:
+                severity: warn
+                warn_if: ">1"
+      - name: payment_terms_guid
+        description: The system generated unique identifier for Payment Terms Codes.
+        tests:
+          - relationships:  
+              to: ref('xref_wbx_payment_terms')  
+              field: payment_terms_guid
+              config:
+                severity: warn
+                warn_if: ">1"

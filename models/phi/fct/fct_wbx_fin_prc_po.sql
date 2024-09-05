@@ -1,0 +1,223 @@
+{{
+    config(
+        materialized=env_var("DBT_MAT_INCREMENTAL"),
+        tags=["finance", "po"],
+        transient=false,
+        unique_key="UNIQUE_KEY",
+        on_schema_change="sync_all_columns",
+        pre_hook="""
+                {{ truncate_if_exists(this.schema, this.table) }}
+                """,
+    )
+}}
+
+with
+/* Captures the main D365 transactional data set. */
+src as (
+    select *, row_number() over (partition by unique_key order by 1) rownum
+    from {{ ref("int_f_wbx_fin_prc_po") }}
+),
+
+/* Captures the main AX history transactional data set.  This model already has any dim values converted as intended. */
+old_fact as
+(
+    select * from {{ref('conv_fct_wbx_fin_prc_po')}}
+),
+
+d365_fact as 
+(
+select
+    source_system,
+    po_order_company,
+    po_order_number,
+    po_order_type,
+    source_po_order_type,
+    po_order_suffix,
+    po_line_number,
+    line_status,
+    line_type,
+    po_line_desc,
+    source_business_unit_code,
+    business_unit_address_guid,
+    source_supplier_identifier,
+    supplier_address_number_guid,
+    source_payment_terms_code,
+    payment_terms_guid,
+    source_freight_handling_code,
+    source_buyer_identifier,
+    buyer_address_number_guid,
+    source_account_identifier,
+    target_account_identifier,
+    account_guid,
+    source_item_identifier,
+    item_guid,
+    source_subledger_identifier,
+    source_subledger_type,
+    contract_company_code,
+    contract_number,
+    contract_type,
+    source_contract_type,
+    contract_line_number,
+    agrmnt_number,
+    agrmnt_suplmnt_number,
+    po_gl_date,
+    po_order_date,
+    po_delivery_date,
+    po_promised_delivery_date,
+    po_requested_date,
+    po_cancelled_date,
+    base_line_unit_cost,
+    line_onhold_quantity,
+    line_open_quantity,
+    line_order_quantity,
+    line_recvd_quantity,
+    transaction_uom,
+    gl_offset_srccd,
+    source_date_updated,
+    load_date,
+    update_date,
+    source_updated_d_id,
+    contract_agreement_flag,
+    target_freight_handling_code,
+    freight_handling_code_desc,
+    txn_currency,
+    base_currency,
+    phi_currency,
+    pcomp_currency,
+    txn_conv_rt,
+    phi_conv_rt,
+    pcomp_conv_rt,
+    base_order_total_amount,
+    base_line_on_hold_amt,
+    base_line_open_amt,
+    base_line_received_amt,
+    txn_order_total_amount,
+    txn_line_on_hold_amt,
+    txn_line_open_amt,
+    txn_line_received_amt,
+    phi_order_total_amount,
+    phi_line_on_hold_amt,
+    phi_line_open_amt,
+    phi_line_received_amt,
+    pcomp_order_total_amount,
+    pcomp_line_on_hold_amt,
+    pcomp_line_open_amt,
+    pcomp_line_received_amt,
+    txn_line_unit_cost,
+    phi_line_unit_cost,
+    pcomp_line_unit_cost,
+    po_org_promise_date,
+    caf_no,
+    project_category,
+    contract_agreement_guid,
+    agreement_number,
+    unique_key,
+    'D365' as source_legacy
+from src
+where rownum = 1
+),
+
+axhist_fact as 
+(
+select
+    a.source_system,
+    a.po_order_company,
+    a.po_order_number,
+    a.po_order_type,
+    a.source_po_order_type,
+    a.po_order_suffix,
+    a.po_line_number,
+    a.line_status,
+    a.line_type,
+    a.po_line_desc,
+    a.source_business_unit_code,
+    a.business_unit_address_guid,
+    a.source_supplier_identifier,
+    a.supplier_address_number_guid,
+    a.source_payment_terms_code,
+    a.payment_terms_guid,
+    a.source_freight_handling_code,
+    a.source_buyer_identifier,
+    a.buyer_address_number_guid,
+    a.source_account_identifier,
+    a.target_account_identifier,
+    a.account_guid,
+    a.source_item_identifier,
+    a.item_guid,
+    a.source_subledger_identifier,
+    a.source_subledger_type,
+    a.contract_company_code,
+    a.contract_number,
+    a.contract_type,
+    a.source_contract_type,
+    a.contract_line_number,
+    a.agrmnt_number,
+    a.agrmnt_suplmnt_number,
+    a.po_gl_date,
+    a.po_order_date,
+    a.po_delivery_date,
+    a.po_promised_delivery_date,
+    a.po_requested_date,
+    a.po_cancelled_date,
+    a.base_line_unit_cost,
+    a.line_onhold_quantity,
+    a.line_open_quantity,
+    a.line_order_quantity,
+    a.line_recvd_quantity,
+    a.transaction_uom,
+    a.gl_offset_srccd,
+    a.source_date_updated,
+    a.load_date,
+    a.update_date,
+    a.source_updated_d_id,
+    a.contract_agreement_flag,
+    a.target_freight_handling_code,
+    a.freight_handling_code_desc,
+    a.txn_currency,
+    a.base_currency,
+    a.phi_currency,
+    a.pcomp_currency,
+    a.txn_conv_rt,
+    a.phi_conv_rt,
+    a.pcomp_conv_rt,
+    a.base_order_total_amount,
+    a.base_line_on_hold_amt,
+    a.base_line_open_amt,
+    a.base_line_received_amt,
+    a.txn_order_total_amount,
+    a.txn_line_on_hold_amt,
+    a.txn_line_open_amt,
+    a.txn_line_received_amt,
+    a.phi_order_total_amount,
+    a.phi_line_on_hold_amt,
+    a.phi_line_open_amt,
+    a.phi_line_received_amt,
+    a.pcomp_order_total_amount,
+    a.pcomp_line_on_hold_amt,
+    a.pcomp_line_open_amt,
+    a.pcomp_line_received_amt,
+    a.txn_line_unit_cost,
+    a.phi_line_unit_cost,
+    a.pcomp_line_unit_cost,
+    a.po_org_promise_date,
+    a.caf_no,
+    a.project_category,
+    a.contract_agreement_guid,
+    a.agreement_number,
+    a.unique_key,
+    'AX' as source_legacy
+from old_fact as a
+    left join d365_fact as b on a.unique_key = b.unique_key
+    where b.source_system is null
+),
+
+/* Combines (union) the D365 data w/ the AX History set.    */
+combine_fact as 
+(
+    select * from d365_fact
+    union all 
+    select * from axhist_fact
+)
+
+select * from combine_fact 
+qualify row_number() over (partition by unique_key order by unique_key desc) = 1

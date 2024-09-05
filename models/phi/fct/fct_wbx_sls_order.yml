@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: fct_wbx_sls_order
+    description: TODO
+    columns:
+      - name: unique_key
+        description: TODO
+        tests:
+          - unique
+      - name: ship_customer_address_guid 
+        tests:  
+        - relationships:  
+            to: ref('dim_wbx_address')   
+            field: ADDRESS_GUID         
+
+      - name: bill_customer_address_guid 
+        tests:  
+        - relationships:  
+            to: ref('dim_wbx_address')   
+            field: ADDRESS_GUID  

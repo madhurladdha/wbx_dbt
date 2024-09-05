@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: fct_wbx_mfg_plan_calendar_xref
+    description: TODO
+    columns:
+      - name: unique_key
+        description: TODO
+        tests:
+          - unique:
+              config:
+                severity: warn
+                warn_if: ">1"
+

@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: fct_wbx_fin_ar_cust_invoice
+    description: AR Customer Invoice .
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique:
+              config:
+                severity: warn
+                warn_if: ">1"
+          - not_null                         
+      - name: document_type 
+        tests: 
+          - not_null:
+              config:
+                severity: warn
+                warn_if: ">1"                
+      - name: document_number 
+        tests: 
+          - not_null:
+              config:
+                severity: warn
+                warn_if: ">1"
+      - name: payment_terms_guid
+        description: The system generated unique identifier for Payment Terms Codes.
+        tests:
+          - relationships:  
+              to: ref('xref_wbx_payment_terms')  
+              field: payment_terms_guid
+              config:
+                severity: warn
+                warn_if: ">1" 
+      - name: customer_address_number_guid
+        description: The system generated unique identifier for Payment Terms Codes.
+        tests:
+          - relationships:  
+              to: ref('dim_wbx_customer')  
+              field: customer_address_number_guid
+              config:
+                severity: warn
+                warn_if: ">1" 
+      - name: business_unit_address_guid
+        description: The system generated unique identifier for Payment Terms Codes.
+        tests:
+          - relationships:  
+              to: ref('dim_wbx_plant_dc')  
+              field: plantdc_address_guid
+              config:
+                severity: warn
+                warn_if: ">1"

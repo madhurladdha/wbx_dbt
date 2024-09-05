@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: SHAREPOINT_DSCI
+    database: "{{env_var('DBT_SRC_WBX_DB')}}"
+    schema: "{{env_var('DBT_SRC_SHAREPOINT_DSCI_SCHEMA')}}"
+    tables:
+      - name: ctp_plant_wc_day
+      - name: ctp_plant_wc_target
+      - name: wtx_item_categorization
+      - name: wtx_item_inflation
+      - name: wbx_budget_sku_pl
+      - name: weetabix_forecast_snapshot_dimension
+      - name: wtx_forecast_exchange_rate
+      - name: wtx_budget_sheet_1
+      - name: wtx_forecast_sheet_1
+      - name: weetabix_ibe_forecast_in
+      - name: wbx_ibe_budget_sku_pl
+      - name: ibe_history_pl
+      - name: ibe_history_sales
+      - name: forecast_accuracy_data_matrix_sheet_1

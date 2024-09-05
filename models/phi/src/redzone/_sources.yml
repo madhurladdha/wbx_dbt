@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: REDZONE
+    database: "{{env_var('DBT_TGT_DB')}}"
+    schema: "{{env_var('DBT_RZ_SCHEMA')}}"
+    tables:
+      - name: RZ_WBX_NORMALIZATION
+  - name: weetabix-org
+    database: "RZ_WBX"
+    schema: "weetabix-org"
+    quoting:
+         database: true
+         schema: true
+         identifier: true
+    tables:
+      - name: v_shift
+      - name: v_losses
+      - name: v_run
+      - name: v_shiftrunsegment
+      - name: v_productunitconversion
+      - name: v_action
+      - name: v_comment
+      - name: v_completeddatasheet
+      - name: v_completeddataitem

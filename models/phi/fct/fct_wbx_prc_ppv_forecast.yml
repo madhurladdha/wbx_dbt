@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: fct_wbx_prc_ppv_forecast
+    description: TODO
+    columns:
+      - name: item_guid 
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_item')  
+              field: ITEM_GUID

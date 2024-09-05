@@ -1,0 +1,34 @@
+with source as (
+
+    select * from {{ source('WEETABIX', 'EXC_Dim_Scenario') }}
+
+),
+
+renamed as (
+
+    select
+SCEN_IDX,
+SCEN_CODE,
+SCEN_NAME,
+START_DAY,
+END_DAY,
+SCEN_STATUS_IDX,
+BASE_SCEN_IDX,
+SCEN_STATUSIFNOTBUILDING_IDX,
+SCEN_TYPE_IDX,
+ISACTIVEBUDGET,
+SALESORG_IDX,
+CUST_LEVEL_IDX,
+PROD_LEVEL_IDX,
+AUTHOR_IDX,
+CREATED_DATE,
+DAYSINSCENARIO,
+DATE_START_IDX,
+DATE_END_IDX
+
+
+    from source
+
+)
+
+select * from renamed

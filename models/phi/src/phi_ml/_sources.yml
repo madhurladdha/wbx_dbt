@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: PHI_ML
+    database: "{{env_var('DBT_SRC_DB')}}"
+    schema: "phi_ml"
+    tables:
+      - name: v_ml_wbx_me_input
+      - name: ml_wbx_month_end_forecast_fct
+      - name: v_wbx_me_rpt_src

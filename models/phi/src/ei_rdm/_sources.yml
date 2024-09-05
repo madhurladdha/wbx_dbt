@@ -1,0 +1,70 @@
+version: 2
+
+sources:
+  - name: EI_RDM
+    database: "{{env_var('DBT_SRC_DB')}}"
+    schema: "{{env_var('DBT_SRC_EI_RDM_SCHEMA')}}"
+    tables:
+      - name: fin_account_dim
+      - name: adr_address_master_dim
+      - name: adr_alt_address_dim
+      - name: adr_company_master_dim
+      - name: adr_plant_dc_master_dim
+      - name: adr_business_rep_dim
+      - name: adr_customer_master_dim
+      - name: adr_div_master_dim
+      - name: adr_location_master_dim
+      - name: adr_supplier_category_dim
+      - name: adr_supplier_dim
+      - name: adr_supplier_master_dim
+      - name: adr_work_center_dim
+      - name: itm_item_master_dim
+      - name: itm_lot_master_dim
+      - name: itm_procurement_category_dim
+      - name: itm_sales_category_dim
+      - name: ref_currency_xref
+      - name: proj_master_dim
+      - name: ref_effective_currency_dim
+      - name: ref_payment_terms_xref
+      - name: ref_payment_terms_xref_stg
+      - name: uom_factor
+      - name: ref_hierarchy_xref
+      - name: prc_supplier_categorization
+      - name: fin_onestream_stg
+      - name: fin_onestream_Fact
+      - name: fin_onestream_month_Fact
+      - name: itm_procurement_category_ext_stg
+      - name: prc_file_supplier_dnb_stg
+      - name: ref_normalization_xref
+      - name: ref_onestream_desc_xref
+      - name: ref_fin_cogs_swap
+      - name: ref_onestream_hier_stg
+      - name: currency_exch_rate_dly_dim
+      - name: currency_exch_rate_dly_dim_oc
+      - name: currency_exch_rate_mth_dim
+      - name: sls_wtx_promo_dim
+      - name: sls_scenario_dim
+      - name: adr_wtx_cust_master_ext
+      - name: proj_master_budg_line
+      - name: itm_wtx_item_master_ext
+      - name: prc_wtx_forecast_exch_rate_stg
+      - name: prc_wtx_forecast_exch_rate_dim
+      - name: sls_wtx_cust_pushdown_xref
+      - name: sls_wtx_item_pushdown_xref
+      - name: sls_wtx_fc_snapshot_dim 
+      - name: sls_wtx_budget_scen_xref
+      - name: sls_wtx_mape_targets
+      - name: fin_subledger_dim
+
+
+  - name: FACTS_FOR_COMPARE
+    database: "{{env_var('DBT_SRC_DB')}}"
+    schema: "{{env_var('DBT_SRC_EI_RDM_SCHEMA')}}"
+    tables:
+      - name: prc_wtx_item_categorization
+      - name: v_wtx_cust_planning
+      - name: sls_wtx_promo_dim_hist
+      - name: prc_wtx_forecast_exch_rate_stg
+
+
+

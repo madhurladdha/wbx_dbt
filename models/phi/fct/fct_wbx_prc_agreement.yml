@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: fct_wbx_prc_agreement
+    description: weetabix agreement
+    columns:
+      - name: unique_key
+        description: unique id on the table
+        tests:
+          - unique
+                                
+      - name: item_guid 
+        tests:
+        - relationships:
+            to: ref('dim_wbx_item') 
+            field: item_guid
+      - name: business_unit_address_guid 
+        tests:  
+        - relationships:  
+            to: ref('dim_wbx_plant_dc')  
+            field: plantdc_address_guid

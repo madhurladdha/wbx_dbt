@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: fct_wbx_sls_forecast_fin
+    description: TODO
+    columns:
+      - name: unique_key
+        description: TODO
+        tests:
+          - unique:
+              config:
+                severity: warn
+                warn_if: ">1"                               
+       
+
+      - name: item_guid 
+        tests:
+        - relationships:
+            to: ref('dim_wbx_item_ext') 
+            field: item_guid
+      
+      - name: scenario_guid 
+        tests:
+        - relationships:
+            to: ref('dim_wbx_scenario') 
+            field: scenario_guid
+
+      - name: customer_address_number_guid
+        tests:
+        - relationships:
+            to: ref('dim_wbx_customer') 
+            field: customer_address_number_guid
+			

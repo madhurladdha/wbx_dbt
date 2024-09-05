@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: PCB_ANALYTICS
+    database: "{{env_var('DBT_SRC_DB')}}"
+    schema: "pcb_analytics"
+    tables:
+      - name: proj_daysinmonth_xref

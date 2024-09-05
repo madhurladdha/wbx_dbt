@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: fct_wbx_fin_prc_po_receipt
+    description: PRC PO.
+    columns:
+      - name: unique_key
+        description: The system generated unique key id created as the primary key of the this table.
+        tests:
+          - unique:
+              config:
+                severity: warn
+                warn_if: ">1"
+          - not_null                         
+      - name: supplier_address_number_guid
+        description: The system generated unique identifier for supplier address.
+        tests:
+          - relationships:  
+              to: ref('dim_wbx_supplier')  
+              field: supplier_address_number_guid
+              config:
+                severity: warn
+                warn_if: ">1" 
+      - name: business_unit_address_guid
+        description: The system generated unique identifier for business unit address.
+        tests:
+          - relationships:  
+              to: ref('dim_wbx_plant_dc')  
+              field: plantdc_address_guid
+              config:
+                severity: warn
+                warn_if: ">1"
+      - name: account_guid 
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_account')  
+              field: ACCOUNT_GUID
+              config:
+                severity: warn
+                warn_if: ">1" 
+      - name: item_guid 
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_item')  
+              field: ITEM_GUID
+              config:
+                severity: warn
+                warn_if: ">1" 
+      - name: payment_terms_guid
+        description: The system generated unique identifier for Payment Terms Codes.
+        tests:
+          - relationships:  
+              to: ref('xref_wbx_payment_terms')  
+              field: payment_terms_guid
+              config:
+                severity: warn
+                warn_if: ">1"

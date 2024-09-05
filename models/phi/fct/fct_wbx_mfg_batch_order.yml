@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: fct_wbx_mfg_batch_order
+    columns:
+      - name: unique_key
+        tests:
+          - unique
+
+      - name: business_unit_address_guid 
+        tests:  
+        - relationships:  
+            to: ref('dim_wbx_plant_dc')  
+            field: plantdc_address_guid
+
+      - name: item_guid 
+        tests:  
+        - relationships:  
+            to: ref('dim_wbx_item')  
+            field: item_guid

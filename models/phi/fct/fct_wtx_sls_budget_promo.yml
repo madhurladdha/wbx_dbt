@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: fct_wtx_sls_budget_promo
+    description: TODO
+    columns:
+      - name: unique_key
+        description: TODO
+        tests:
+          - unique:
+              config:
+                severity: warn
+                warn_if: ">1"
+                                
+      - name: promo_guid
+        tests:
+        - relationships:
+            to: ref('dim_wbx_promo')  
+            field: promo_guid      
+
+      - name: item_guid 
+        tests:
+        - relationships:
+            to: ref('dim_wbx_item_ext') 
+            field: item_guid
+      
+      - name: scenario_guid 
+        tests:
+        - relationships:
+            to: ref('dim_wbx_scenario') 
+            field: scenario_guid
+
+      - name: prm_rpt_customer_guid 
+        tests:
+        - relationships:
+            to: ref('dim_wbx_customer') 
+            field: customer_address_number_guid
+            

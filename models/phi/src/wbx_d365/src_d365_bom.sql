@@ -1,0 +1,62 @@
+with
+    d365_source as (
+        select * from {{ source("D365", "bom") }} where _FIVETRAN_DELETED='FALSE'),
+
+    renamed as (
+        select
+            'D365' as source,
+            cast(line_num AS DECIMAL(32,16)) as linenum,
+            bomtype as bomtype,
+            bomconsump as bomconsump,
+            item_id as itemid,
+            bomqty as bomqty,
+            calculation as calculation,
+            height as height,
+            width as width,
+            depth as depth,
+            density as density,
+            constant as constant,
+            round_up as roundup,
+            round_up_qty as roundupqty,
+            null as position,
+            opr_num as oprnum,
+            from_date as fromdate,
+            to_date as todate,
+            null as vendid,
+            unit_id as unitid,
+            bomid as bomid,
+            null as configgroupid,
+            formula as formula,
+            bomqty_serie as bomqtyserie,
+            null as itembomid,
+            null as itemrouteid,
+            invent_dim_id as inventdimid,
+            cast(scrap_var as NUMBER(32,16)) as scrapvar,
+            scrap_const as scrapconst,
+            prod_flushing_princip as prodflushingprincip,
+            end_sched_consump as endschedconsump,
+            proj_set_sub_prod_to_consumed as projsetsubprodtoconsumed,
+            wrk_ctr_consumption as wrkctrconsumption,
+            null as itempbaid,
+            null as pdsbasevalue,
+            pds_cwqty as pdscwqty,
+            pdsingredient_type as pdsingredienttype,
+            pdsinherit_co_product_batch_attrib as pdsinheritcoproductbatchattrib,
+            pdsinherit_co_product_shelf_life as pdsinheritcoproductshelflife,
+            pdsinherit_end_item_batch_attrib as pdsinheritenditembatchattrib,
+            pdsinherit_end_item_shelf_life as pdsinheritenditemshelflife,
+            pmf_formula_pct as pmfformulapct,
+            pmf_pct_enable as pmfpctenable,
+            null as pmfplangroupid,
+            pmf_plan_group_priority as pmfplangrouppriority,
+            pmf_scalable as pmfscalable,
+            modifieddatetime as modifieddatetime,
+            upper(data_area_id) as dataareaid,
+            recversion as recversion,
+            partition as partition,
+            recid as recid
+        from d365_source  where upper(dataareaid) in {{env_var("DBT_D365_COMPANY_FILTER")}}
+
+    )
+
+select * from renamed

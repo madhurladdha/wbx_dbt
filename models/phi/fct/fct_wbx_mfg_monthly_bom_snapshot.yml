@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: fct_wbx_mfg_monthly_bom_snapshot
+    description: TODO
+    columns:
+      - name: root_src_item_guid 
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_item')  
+              field: item_guid
+      - name: parent_src_item_guid 
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_item')  
+              field: item_guid
+      - name: comp_src_item_guid 
+        tests:  
+          - relationships:  
+              to: ref('dim_wbx_item')  
+              field: item_guid                            

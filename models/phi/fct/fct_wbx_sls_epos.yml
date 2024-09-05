@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: fct_wbx_sls_epos
+    description: TODO
+    columns:
+      - name: unique_key
+        description: TODO
+        tests:
+          - unique:
+              config:
+                severity: warn
+                warn_if: ">1"
+                                
+      - name: bill_customer_address_guid
+        tests:
+        - relationships:
+            to: ref('dim_wbx_customer')  
+            field: customer_address_number_guid      
+
+      - name: item_guid 
+        tests:
+        - relationships:
+            to: ref('dim_wbx_item') 
+            field: item_guid

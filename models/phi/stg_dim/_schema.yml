@@ -1,0 +1,6 @@
+version: 2
+
+models:
+    - name: stg_d_wbx_plant_dc
+      description: "Weetabix dimensional stage table for plant/dc dimension"
+   

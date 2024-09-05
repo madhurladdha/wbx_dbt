@@ -1,0 +1,160 @@
+with SRC as 
+(
+    select * from {{ ref('stg_d_wbx_item') }}
+),
+
+PLANT_NON_CC AS
+(
+   select distinct 
+          SOURCE_SYSTEM,               
+          SOURCE_BUSINESS_UNIT_CODE,   
+          BUSINESS_UNIT_NAME  AS BUS_UNIT_DESC,
+          PLANTDC_ADDRESS_GUID,        
+          PLANTDC_ADDRESS_GUID_OLD    
+    from {{ ref('dim_wbx_plant_dc') }} 
+),
+
+
+Normalization_wave1 AS
+(
+select 
+    SRC.SOURCE_SYSTEM, 
+    SOURCE_ITEM_IDENTIFIER,
+    {{ dbt_utils.surrogate_key(['SRC.SOURCE_SYSTEM','SOURCE_ITEM_IDENTIFIER']) }} AS ITEM_GUID,
+    NULL                                  AS ITEM_GUID_OLD,    
+    PLANT_NON_CC.PLANTDC_ADDRESS_GUID     AS BUSINESS_UNIT_ADDRESS_GUID,
+    PLANT_NON_CC.PLANTDC_ADDRESS_GUID_OLD AS BUSINESS_UNIT_ADDRESS_GUID_OLD,
+    PLANT_NON_CC.BUS_UNIT_DESC            AS BUS_UNIT_DESC,
+    SRC.BUSINESS_UNIT_CODE                AS SOURCE_BUSINESS_UNIT_CODE,
+    CASE_ITEM_NUMBER,
+    null as LEGACY_CASE_ITEM_NUMBER,
+    DESCRIPTION,
+    SHORT_DESCRIPTION,
+    PACK_SIZE_DESC,
+    STOCK_TYPE,
+    STOCK_DESC,
+    SHELF_LIFE_DAYS,
+    BUYER_NAME,
+    BUYER_GROUP as BUYER_CODE,
+    CASE_GROSS_WEIGHT,
+    CASE_NET_WEIGHT,
+    MASTER_REPORTING_CATEGORY,
+    ALTERNATE_REPORTING_CATEGORY,
+    item_category_1,
+    item_category_2,
+    item_category_3,
+    item_category_4,
+    item_category_5,
+    item_category_6,
+    item_category_7,
+    item_category_8,
+    item_category_9,
+    item_category_10,
+    lead_time,
+    NVL(TO_CHAR(PRIMARY_UOM_LKP.NORMALIZED_VALUE),TO_CHAR(SRC.PRIMARY_UOM))  AS PRIMARY_UOM,
+    NVL(TO_CHAR(ITEM_TYPE_LKP.NORMALIZED_VALUE),TO_CHAR(SRC.ITEM_TYPE)) AS ITEM_TYPE,
+    HIGHLEVEL_CATEGORY_CODE ,												   
+    MIDLEVEL_CATEGORY_CODE,										           
+    LOWLEVEL_CATEGORY_CODE,                                                                           
+    ALTERNATE_ITEM_NUMBER,                                                             
+    DIVISION,
+    DIVISION_C0DE,
+    ITEM_CLASS,
+    OBSOLETE_FLAG,
+    MAX_REORDER_QUANTITY,
+    MIN_REORDER_QUANTITY,
+    CAST(CASE WHEN SRC.SUPPLIER_CODE='' THEN 0 ELSE SUPPLIER_CODE END AS VARCHAR(255)) AS VENDOR_ADDRESS_GUID
+    
+from SRC
+join PLANT_NON_CC on PLANT_NON_CC.SOURCE_SYSTEM=SRC.SOURCE_SYSTEM and ((SRC.BUSINESS_UNIT_CODE = plant_non_cc.SOURCE_BUSINESS_UNIT_CODE))
+LEFT JOIN {{ lkp_normalization('SRC.SOURCE_SYSTEM','ITEM','ITEM_TYPE','UPPER(SRC.ITEM_TYPE)','ITEM_TYPE_LKP') }} 
+LEFT JOIN {{ lkp_normalization('SRC.SOURCE_SYSTEM','ITEM','PRIMARY_UOM','UPPER(SRC.PRIMARY_UOM)','PRIMARY_UOM_LKP') }}
+
+
+),
+
+/* 2nd Layer of Normalisation*/
+FINAL_ITEM as
+(
+select
+    Normalization_wave1.SOURCE_SYSTEM as source_system,
+    SOURCE_ITEM_IDENTIFIER,
+    ITEM_GUID,
+    ITEM_GUID_OLD,    
+    BUSINESS_UNIT_ADDRESS_GUID,
+    BUSINESS_UNIT_ADDRESS_GUID_OLD,
+    BUS_UNIT_DESC,
+    SOURCE_BUSINESS_UNIT_CODE,
+    CASE_ITEM_NUMBER,
+    LEGACY_CASE_ITEM_NUMBER,
+    DESCRIPTION,
+    SHORT_DESCRIPTION,
+    cast (substring(trunc(PACK_SIZE_DESC),1,255) as varchar2(255)) as PACK_SIZE_DESC,
+    STOCK_TYPE,
+    STOCK_DESC,
+    SHELF_LIFE_DAYS,
+    BUYER_NAME,
+    BUYER_CODE,
+    PRIMARY_UOM,
+    ITEM_TYPE,
+    MASTER_REPORTING_CATEGORY,
+    ALTERNATE_REPORTING_CATEGORY,
+    item_category_1,
+    item_category_2,
+    item_category_3,
+    item_category_4,
+    item_category_5,
+    item_category_6,
+    item_category_7,
+    item_category_8,
+    item_category_9,
+    item_category_10,
+    lead_time,
+    HIGHLEVEL_CATEGORY_CODE,
+    MIDLEVEL_CATEGORY_CODE,
+    LOWLEVEL_CATEGORY_CODE,
+    CASE_GROSS_WEIGHT,
+    CASE_NET_WEIGHT,
+    NVL(TO_CHAR(PRIMARY_UOM_DESC_LKP.NORMALIZED_VALUE),TO_CHAR(Normalization_wave1.PRIMARY_UOM))  AS PRIMARY_UOM_DESC,
+    cast (substring(trunc(ALTERNATE_ITEM_NUMBER),1,255) as varchar2(255)) as ALTERNATE_ITEM_NUMBER,
+    DIVISION,
+    DIVISION_C0DE,
+    ITEM_CLASS,
+    OBSOLETE_FLAG,
+    cast (substring(trunc(MAX_REORDER_QUANTITY),1,60) as varchar2(60)) as MAX_REORDER_QUANTITY,
+    cast (substring(trunc(MIN_REORDER_QUANTITY),1,60) as varchar2(60)) as MIN_REORDER_QUANTITY,
+    
+    /* Added below list of fields as required in datasource views. 
+    These are not added in stage as all are NULL in current IICS code. */
+
+    NULL AS CASE_UPC,
+	NULL AS PURCHASE_MAKE_INDICATOR,
+	NULL AS PLANNER_CODE,
+	NULL AS GL_CLASS_NAME,
+	NULL AS CONSUMER_GTIN_NUMBER,
+	NULL AS FORMULA_VARIATION,
+	NULL AS MULTIPLE_ORDER_QUANTITY,
+	NULL AS REORDER_POINT,
+	NULL AS REORDER_QUANTITY,
+	NULL AS CUSTOMER_SELLING_UNIT,
+	NULL AS SALES_CATERGORY1_CODE,
+	NULL AS SALES_CATERGORY2_CODE,
+	NULL AS SALES_CATERGORY3_CODE,
+	NULL AS SALES_CATERGORY4_CODE,
+	NULL AS SALES_CATERGORY5_CODE,
+	NULL AS MASTER_PLANNING_FAMILY_CODE,
+	NULL AS COST_OBJECT,
+	NULL AS PROFIT_LOSS_CODE,
+	NULL AS FREIGHT_HANDLING,
+	NULL AS DEFAULT_BROKER_COMM_RATE,
+	NULL AS CONSUMER_UNIT_SIZE,
+	NULL AS LABEL_OWNER,
+	NULL AS MANUFACTURER_ID,
+	NULL AS SAFETY_STOCK ,
+    VENDOR_ADDRESS_GUID
+
+From Normalization_wave1
+LEFT JOIN {{ lkp_normalization("'ALL'",'ITEM','UOM_DESC','UPPER(PRIMARY_UOM)','PRIMARY_UOM_DESC_LKP') }}
+)
+
+select distinct * from FINAL_ITEM

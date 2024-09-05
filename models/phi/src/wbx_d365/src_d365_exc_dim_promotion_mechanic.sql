@@ -1,0 +1,29 @@
+
+
+with source as (
+
+    select * from {{ source('WEETABIX', 'EXC_Dim_Promotion_Mechanic') }}
+
+),
+
+renamed as (
+
+    select
+MECHANIC_IDX,
+MECHANIC_CODE,
+MECHANIC_NAME,
+MECHANIC_XVALUE,
+MECHANIC_YVALUE,
+MECHANIC_DISCOUNT,
+MECHANIC_PROMOISP_ROUNDING,
+MECHANIC_PROMOISP_TRUNCATION,
+MECHANIC_SORT,
+CALC_TYPE,
+MECHANIC_ISACTIVE,
+MECHANIC_L1_IDX
+
+    from source
+
+)
+
+select * from renamed

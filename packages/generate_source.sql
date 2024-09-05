@@ -1,0 +1,1 @@
+{{ codegen.generate_source('stg_customers') }}

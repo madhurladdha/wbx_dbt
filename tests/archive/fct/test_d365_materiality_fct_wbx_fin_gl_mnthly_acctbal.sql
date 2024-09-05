@@ -1,0 +1,70 @@
+{{ config( 
+    enabled=false,
+    severity = 'warn',
+    warn_if = '>1'  
+) }} 
+
+select IDENTIFIER,value_type,"'AX'" AX,"'D365'" D365, "'AX'"-"'D365'" difference, case when "'AX'" <>0 then abs((("'AX'"-"'D365'")/"'AX'")*100) else 0 end "difference_perc%" from (
+select * from (
+select * from (
+select   
+'AX' SOURCE_SYSTEM,
+FISCAL_PERIOD_NUMBER||'-'||COMPANY_CODE||'-'||SOURCE_BUSINESS_UNIT_CODE||'-'||SOURCE_ACCOUNT_IDENTIFIER IDENTIFIER,
+sum(to_number(TXN_PRIOR_YEAR_ENDING_BAL,20,2)) as TXN_PRIOR_YEAR_ENDING_BAL,
+sum(to_number(TXN_PERIOD_CHANGE_AMT,20,2)) as TXN_PERIOD_CHANGE_AMT,
+sum(to_number(TXN_YTD_BAL,20,2)) as TXN_YTD_BAL,
+sum(to_number(BASE_PRIOR_YEAR_ENDING_BAL,20,2)) as BASE_PRIOR_YEAR_ENDING_BAL,
+sum(to_number(BASE_PERIOD_CHANGE_AMT,20,2)) as BASE_PERIOD_CHANGE_AMT,
+sum(to_number(BASE_YTD_BAL,20,2)) as BASE_YTD_BAL,
+sum(to_number(PHI_PRIOR_YEAR_ENDING_BAL,20,2)) as PHI_PRIOR_YEAR_ENDING_BAL,
+sum(to_number(PHI_PERIOD_CHANGE_AMT,20,2)) as PHI_PERIOD_CHANGE_AMT,
+sum(to_number(PHI_YTD_BAL,20,2)) as PHI_YTD_BAL,
+sum(to_number(PCOMP_PRIOR_YEAR_ENDING_BAL,20,2)) as PCOMP_PRIOR_YEAR_ENDING_BAL,
+sum(to_number(PCOMP_PERIOD_CHANGE_AMT,20,2)) as PCOMP_PERIOD_CHANGE_AMT,
+sum(to_number(PCOMP_YTD_BAL,20,2)) as PCOMP_YTD_BAL
+from   "WBX_PROD"."FACT".fct_wbx_fin_gl_mnthly_acctbal where SOURCE_ACCOUNT_IDENTIFIER not like '20%'
+  group by  FISCAL_PERIOD_NUMBER ,COMPANY_CODE,SOURCE_BUSINESS_UNIT_CODE,SOURCE_ACCOUNT_IDENTIFIER 
+
+union all
+
+select  
+'D365' SOURCE_SYSTEM,
+FISCAL_PERIOD_NUMBER||'-'||COMPANY_CODE||'-'||SOURCE_BUSINESS_UNIT_CODE||'-'||SOURCE_ACCOUNT_IDENTIFIER IDENTIFIER,
+sum(to_number(TXN_PRIOR_YEAR_ENDING_BAL,20,2)) as TXN_PRIOR_YEAR_ENDING_BAL,
+sum(to_number(TXN_PERIOD_CHANGE_AMT,20,2)) as TXN_PERIOD_CHANGE_AMT,
+sum(to_number(TXN_YTD_BAL,20,2)) as TXN_YTD_BAL,
+sum(to_number(BASE_PRIOR_YEAR_ENDING_BAL,20,2)) as BASE_PRIOR_YEAR_ENDING_BAL,
+sum(to_number(BASE_PERIOD_CHANGE_AMT,20,2)) as BASE_PERIOD_CHANGE_AMT,
+sum(to_number(BASE_YTD_BAL,20,2)) as BASE_YTD_BAL,
+sum(to_number(PHI_PRIOR_YEAR_ENDING_BAL,20,2)) as PHI_PRIOR_YEAR_ENDING_BAL,
+sum(to_number(PHI_PERIOD_CHANGE_AMT,20,2)) as PHI_PERIOD_CHANGE_AMT,
+sum(to_number(PHI_YTD_BAL,20,2)) as PHI_YTD_BAL,
+sum(to_number(PCOMP_PRIOR_YEAR_ENDING_BAL,20,2)) as PCOMP_PRIOR_YEAR_ENDING_BAL,
+sum(to_number(PCOMP_PERIOD_CHANGE_AMT,20,2)) as PCOMP_PERIOD_CHANGE_AMT,
+sum(to_number(PCOMP_YTD_BAL,20,2)) as PCOMP_YTD_BAL
+from   WBX_DEV.ZZ_RRAJAGOPALAN.fct_wbx_fin_gl_mnthly_acctbal  where SOURCE_ACCOUNT_IDENTIFIER not like '20%' --and LEDGER_TYPE like 'GEN%'
+  group by  FISCAL_PERIOD_NUMBER,COMPANY_CODE ,SOURCE_BUSINESS_UNIT_CODE,SOURCE_ACCOUNT_IDENTIFIER 
+ ) 
+  unpivot(value_of for value_type in 
+          (
+TXN_PRIOR_YEAR_ENDING_BAL,
+TXN_PERIOD_CHANGE_AMT,
+TXN_YTD_BAL,
+BASE_PRIOR_YEAR_ENDING_BAL,
+BASE_PERIOD_CHANGE_AMT,
+BASE_YTD_BAL,
+PHI_PRIOR_YEAR_ENDING_BAL,
+PHI_PERIOD_CHANGE_AMT,
+PHI_YTD_BAL,
+PCOMP_PRIOR_YEAR_ENDING_BAL,
+PCOMP_PERIOD_CHANGE_AMT,
+PCOMP_YTD_BAL
+)
+)
+ --where nvl(year_gl_date,0) > 2018   
+)
+ pivot(sum(value_of) for source_system in ('AX', 'D365')) 
+      as p
+)
+where abs(DIFFERENCE) > 100
+order by 1,2

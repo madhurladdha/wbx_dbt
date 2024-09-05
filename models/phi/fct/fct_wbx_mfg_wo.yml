@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: fct_wbx_mfg_wo
+    description: mfg work order fact
+    columns:
+      - name: unique_key
+        description: unique surr id on the table
+        tests:
+          - unique:
+              config:
+                severity: warn
+                warn_if: ">1"
+

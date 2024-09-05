@@ -1,0 +1,31 @@
+
+
+with source as (
+
+    select * from {{ source('WEETABIX', 'EXC_Dim_Promotions_Group') }}
+
+),
+
+renamed as (
+
+    select
+PROMO_GROUP_IDX,
+PROMO_GROUP_CODE,
+PROMO_GROUP_NAME,
+PROMO_GROUP_AUTHOR_USER_IDX,
+DATE_CREATED,
+LASTSAVEBYUSER,
+LASTPROMOREBUILDDATE,
+FINANCIALIMPACTESTIMATE,
+ROBFUNDINGREQUIRED,
+BASEDONTEMPLATEIDX,
+FILE_LOCATION,
+END_EARLY_DATE,
+END_EARLY_DAY_IDX,
+ISCOMBINED
+
+    from source
+
+)
+
+select * from renamed
